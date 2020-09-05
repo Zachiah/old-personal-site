@@ -11,7 +11,8 @@
     <div class="navbar-menu {active ? 'is-active' : ''}">
         <div class="navbar-end">
             <a href="/math-problems" class="navbar-item {'math-problems' === segment ? 'is-active' : ''}">Math Problems</a>
-        </div>
+            <a href="/spirograph" class="navbar-item {'spirograph' === segment ? 'is-active' : ''}">Spirograph</a>
+        </div> 
     </div>
 </nav>
 

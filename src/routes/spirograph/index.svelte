@@ -111,18 +111,6 @@
         padding: 0.5em;
     }
 
-    .primary {
-        background: #2196F3;
-    }
-
-    .secondary {
-        background: #00838F;
-    }
-
-    h1 {
-        margin-bottom: 0.25em;
-    }
-
     @media only screen and (max-width: 30em) {
         .split-pain {
             flex-direction: column;
