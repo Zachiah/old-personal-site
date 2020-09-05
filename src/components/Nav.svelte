@@ -1,6 +1,7 @@
-<nav class="navbar is-primary mb-4">
+<nav class="navbar is-primary mb-4"> 
     <div class="navbar-brand">
         <a class="navbar-item {undefined === segment ? 'is-active' : ''}" href="/">Home</a>
+        
         <button class="navbar-burger button is-primary is-outlined {active ? 'is-active' : ''}" on:click={() => active = !active}>
             {#each [1,2,3] as i}
                 <span aria-hidden="true"></span> 
@@ -17,5 +18,4 @@
 <script>
     export let segment;
     let active = false;
-     
 </script> 
