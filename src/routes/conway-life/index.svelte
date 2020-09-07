@@ -1,6 +1,7 @@
 <script>
     import Square from "/components/conway-life/Square.svelte";
     import TextField from "/components/TextField.svelte";
+    import Header from "/components/Header.svelte"
     import {onMount} from "svelte";
 
     let grid = [];
@@ -100,6 +101,8 @@
         margin: auto;
     }
 </style>
+
+<Header>Conway's Game of life</Header>
 
 <button class="button is-primary" on:click={() => {grid = nextGrid(grid)}} disabled={active}>Next</button>
 <button class="button is-secondary" on:click={() => {grid = emptyGrid(20,gridWidth)}} disabled={active}>Clear</button>
