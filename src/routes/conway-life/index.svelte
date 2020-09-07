@@ -12,14 +12,22 @@
     let lastY = 1;
     let lastX = 1;
 
+    let gridHeight = 20;
+    let gridWidth = 0;
+
+
     let setGrid = false;
-    $: gridWidth = Math.min(Math.floor(gridWidthPixels / 23), 20);
-    $: if (!setGrid) {
-        grid = emptyGrid(20,gridWidth);
+
+    
+    $: {
+        if (!setGrid) gridWidth = Math.min(Math.floor(gridWidthPixels / 23), 50);
+        grid = emptyGrid(gridHeight,gridWidth);
         if (gridWidth !== 0) {
             setGrid = true
         }
     }
+
+
 
 
     function serializeNum(num,maxIndex) {
@@ -101,16 +109,34 @@
 
         return grid;
     }
-    function addGlider(y,x,grid) {
-        const glider = [
+    function addShape(shape) {
+        grid = superimpose(lastY,lastX,shape,grid)
+    }
+
+    const SHAPES = {
+        "glider": [
             [1,0,0],
             [0,1,1],
             [1,1,0]
-        ];
-        return superimpose(y,x,glider,grid);
+        ],
+        "spaceship": [
+            [0,1,1,1,1],
+            [1,0,0,0,1],
+            [0,0,0,0,1],
+            [1,0,0,1,0]
+        ],
+        "gosper-glider-gun": [
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+            [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+            [1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        ]
     }
-
-    try {window.superimpose = superimpose} catch {}
 
 
 </script>
@@ -119,28 +145,69 @@
     .row {
         display: flex;
     }
+    .grid-wrapper {
+        flex-grow: 1;
+    }
     .grid {
-        max-width: 460px;
+        max-width: 1150px;
         margin: auto;
+    }
+    .parent {
+        display: flex;
+    }
+    .the-buttons {
+        width: 20em;
+    }
+    .the-buttons * {
+        display: block;
+        width: 100%;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .parent {
+            flex-direction:column;
+        }
+        .grid-wrapper {
+            order: 0;
+        }
+        .the-buttons {
+            order: 1;
+            width: 100%;
+            padding: 2em;
+        }
     }
 </style>
 
 <Header>Conway's Game of life</Header>
 
-<button class="button is-primary" on:click={() => {grid = nextGrid(grid)}} disabled={active}>Next</button>
-<button class="button is-secondary" on:click={() => {grid = emptyGrid(20,gridWidth)}} disabled={active}>Clear</button>
-<button class="button is-primary" on:click={run} disabled={active}>Run</button>
-<button class="button is-danger" on:click={() => {clearTimeout(timeout); active = false}} disabled={!active}>Stop</button>
-<button class="button is-primary" on:click={seedRandom} disabled={active}>Seed Random</button>
-<button class="button is-primary" on:click={() => {grid = addGlider(lastY,lastX,grid);}} disabled={active} title="add glider to where you last pressed">Add Glider</button>
-<TextField bind:value={waitTime} inline class="ml-2" type="number">wait time between iterations (ms)</TextField>
+<div class="parent">
+    <div class="the-buttons mr-2">
+        <button class="button is-primary" on:click={() => {grid = nextGrid(grid)}} disabled={active}>Next</button>
+        <button class="button is-secondary" on:click={() => {grid = emptyGrid(gridHeight,gridWidth)}} disabled={active}>Clear</button>
+        <button class="button is-primary" on:click={run} disabled={active}>Run</button>
+        <button class="button is-danger" on:click={() => {clearTimeout(timeout); active = false}} disabled={!active}>Stop</button>
+        <button class="button is-primary" on:click={seedRandom} disabled={active}>Seed Random</button>
+        <TextField bind:value={waitTime} inline type="number">wait time between iterations (ms)</TextField>
+        <TextField bind:value={gridWidth} inline type="number">Grid Width</TextField>
+        <TextField bind:value={gridHeight} inline type="number">Grid Height</TextField>
 
-<div class="grid" bind:clientWidth={gridWidthPixels}>
-    {#each grid as row, rowIndex}
-        <div class="row">
-            {#each row as square, squareIndex}
-                <Square bind:alive={square} onclick={() => {row[squareIndex] = 1-row[squareIndex]; lastY = rowIndex; lastX = squareIndex}}/>
+        <h2 class="title is-4 mt-4">Add Objects</h2>
+        <p class="title is-6">objects are added from the square you last clicked on</p>
+        <button class="button is-primary" on:click={() => addShape(SHAPES['glider'])} disabled={active} title="add glider to where you last pressed">Glider</button>
+        <button class="button is-primary" on:click={() => addShape(SHAPES['spaceship'])} disabled={active} title="add spaceship to where you last pressed">Spaceship</button>
+        <button class="button is-primary" on:click={() => addShape(SHAPES['gosper-glider-gun'])} disabled={active} title="add gosper glider gun to where you last pressed">Gosper Glider Gun</button>
+        
+    </div>
+
+    <div class="grid-wrapper">
+        <div class="grid" bind:clientWidth={gridWidthPixels}>
+            {#each grid as row, rowIndex}
+                <div class="row">
+                    {#each row as square, squareIndex}
+                        <Square bind:alive={square} onclick={() => {row[squareIndex] = 1-row[squareIndex]; lastY = rowIndex; lastX = squareIndex}}/>
+                    {/each}
+                </div>
             {/each}
         </div>
-    {/each}
+    </div>
 </div>
