@@ -6,6 +6,7 @@ import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
+import rootImport from 'rollup-plugin-root-import';
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -21,6 +22,9 @@ export default {
 		input: config.client.input(),
 		output: config.client.output(),
 		plugins: [
+			rootImport({
+				root: `${__dirname}/src`
+			}),
 			replace({
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode)
@@ -67,6 +71,9 @@ export default {
 		input: config.server.input(),
 		output: config.server.output(),
 		plugins: [
+			rootImport({
+				root: `${__dirname}/src`
+			}),
 			replace({
 				'process.browser': false,
 				'process.env.NODE_ENV': JSON.stringify(mode)
@@ -91,6 +98,9 @@ export default {
 		input: config.serviceworker.input(),
 		output: config.serviceworker.output(),
 		plugins: [
+			rootImport({
+				root: `${__dirname}/src`
+			}),
 			resolve(),
 			replace({
 				'process.browser': true,
