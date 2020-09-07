@@ -9,6 +9,8 @@
     let active = false;
     let waitTime = 500;
     let gridWidthPixels = 0;
+    let lastY = 1;
+    let lastX = 1;
 
     let setGrid = false;
     $: gridWidth = Math.min(Math.floor(gridWidthPixels / 23), 20);
@@ -28,7 +30,7 @@
             return maxIndex + num;
         }
         else {
-            return maxIndex - num;
+            return num - maxIndex;
         }
     }
 
@@ -89,6 +91,27 @@
         grid = grid.map(row => row.map(item => Math.floor(Math.random()*2)));
     }
 
+    function superimpose(y,x,thing,grid) {
+        const sn = serializeNum;
+        grid = grid.map(row => row.map(item => item));
+
+        thing.forEach((row,rowIndex) => row.forEach((item,itemIndex) => {
+            grid[sn(y+rowIndex, grid.length)][sn(x+itemIndex,grid[0].length)] = item;
+        }));
+
+        return grid;
+    }
+    function addGlider(y,x,grid) {
+        const glider = [
+            [1,0,0],
+            [0,1,1],
+            [1,1,0]
+        ];
+        return superimpose(y,x,glider,grid);
+    }
+
+    try {window.superimpose = superimpose} catch {}
+
 
 </script>
 
@@ -109,13 +132,14 @@
 <button class="button is-primary" on:click={run} disabled={active}>Run</button>
 <button class="button is-danger" on:click={() => {clearTimeout(timeout); active = false}} disabled={!active}>Stop</button>
 <button class="button is-primary" on:click={seedRandom} disabled={active}>Seed Random</button>
+<button class="button is-primary" on:click={() => {grid = addGlider(lastY,lastX,grid);}} disabled={active} title="add glider to where you last pressed">Add Glider</button>
 <TextField bind:value={waitTime} inline class="ml-2" type="number">wait time between iterations (ms)</TextField>
 
 <div class="grid" bind:clientWidth={gridWidthPixels}>
-    {#each grid as row}
+    {#each grid as row, rowIndex}
         <div class="row">
-            {#each row as square}
-                <Square bind:alive={square} />
+            {#each row as square, squareIndex}
+                <Square bind:alive={square} onclick={() => {row[squareIndex] = 1-row[squareIndex]; lastY = rowIndex; lastX = squareIndex}}/>
             {/each}
         </div>
     {/each}

@@ -1,5 +1,6 @@
 <script>
     export let alive;
+    export let onclick = () => {};
 </script>
 
 <style>
@@ -19,4 +20,4 @@
     }
 </style>
 
-<button on:click={() => alive = 1-alive} style="background: {alive ? 'black' : 'white'}"></button>
+<button on:click={onclick} style="background: {alive ? 'black' : 'white'}"></button>
