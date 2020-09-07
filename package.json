@@ -1,7 +1,7 @@
 {
   "name": "zachiah-sawyer-site",
   "description": "Zachiah Sawyer's personal site",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "repository": "https://github.com/zachiah/zachiah-sawyer-site",
   "scripts": {
     "dev": "sapper dev",

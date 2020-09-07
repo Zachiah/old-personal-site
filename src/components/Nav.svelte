@@ -10,8 +10,9 @@
     </div>
     <div class="navbar-menu {active ? 'is-active' : ''}">
         <div class="navbar-end">
-            <a href="/math-problems" class="navbar-item {'math-problems' === segment ? 'is-active' : ''}">Math Problems</a>
-            <a href="/spirograph" class="navbar-item {'spirograph' === segment ? 'is-active' : ''}">Spirograph</a>
+            {#each links as link}
+                <a href="/{link}" class="navbar-item {link === segment ? 'is-active' : ''}">{pathToHuman(link)}</a>
+            {/each}
         </div> 
     </div>
 </nav>
@@ -19,4 +20,10 @@
 <script>
     export let segment;
     let active = false;
+
+    const links = ['math-problems','spirograph','conway-life'];
+
+    function pathToHuman(path) {
+        return path.split("-").map(item => item[0].toUpperCase() + item.substring(1)).join(" ")
+    }
 </script> 
