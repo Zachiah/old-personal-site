@@ -8,8 +8,12 @@
     export async function preload(page,session) {
         const {id} = page.params;
 
-        const mathProblem = await this.fetch(`/math-problems/${id}.json`).then(data => data.json());
-        return {mathProblem}
+        let mathProblem = await this.fetch(`/math-problems/${id}.json`);
+        if (mathProblem.ok) {
+            mathProblem = await mathProblem.json();
+            return {mathProblem}
+        }
+        this.error(404,'Not found');
     }
 </script>
 
