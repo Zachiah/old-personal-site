@@ -10,10 +10,12 @@ export async function get(req,res,next) {
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(bookJSON.chapters[chapter].verses.map(item => ({text: item.text, verse: parseInt(item.verse)}))));
         } else {
+            console.log("Invalid chapter");
             next();
         }
         
     } else {
+        console.log("Invalid Book")
         next();
     }
 }
