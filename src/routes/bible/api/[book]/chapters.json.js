@@ -1,5 +1,5 @@
-import validateBook from "../_validateBook";
-import getChapters from "../_getChapters";
+import validateBook from "../../_validateBook";
+import getChapters from "../../_getChapters";
 
 export async function get(req,res,next) {
     let {book} = req.params;

@@ -7,6 +7,9 @@ import { terser } from 'rollup-plugin-terser';
 import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 import rootImport from 'rollup-plugin-root-import';
+import autoPreprocess from 'svelte-preprocess';
+import sass from 'rollup-plugin-sass';
+
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -32,11 +35,13 @@ export default {
 			svelte({
 				dev,
 				hydratable: true,
-				emitCss: true
-            }),
+				emitCss: true,
+				preprocess: autoPreprocess()
+			}),
+			sass(),
 			resolve({
 				browser: true,
-				dedupe: ['svelte']
+				dedupe: ['svelte'],
 			}),
             commonjs(),
 
@@ -81,10 +86,12 @@ export default {
 			svelte({
 				generate: 'ssr',
 				hydratable: true,
-				dev
-            }),
+				dev,
+				preprocess: autoPreprocess()
+			}),
+			sass(),
 			resolve({
-				dedupe: ['svelte']
+				dedupe: ['svelte'],
 			}),
 			commonjs()
 		],

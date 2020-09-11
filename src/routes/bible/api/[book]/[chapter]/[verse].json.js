@@ -1,4 +1,4 @@
-import validateBook from "../../_validateBook";
+import validateBook from "../../../_validateBook";
 
 export async function get(req,res,next) {
     let {book,chapter,verse} = req.params;

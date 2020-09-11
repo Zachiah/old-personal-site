@@ -1,4 +1,4 @@
-import validateBook from "../../_validateBook";
+import validateBook from "../../../_validateBook";
 import books from "/data/kjv/books.js";
 
 export async function get(req,res,next) {

@@ -3,6 +3,9 @@
     export let chapter;
     export let previous;
     export let next;
+
+    export let leftButton = undefined;
+    export let rightButton = undefined;
 </script>
 
 <style>
@@ -25,7 +28,7 @@
 </style>
 
 <div class="the-buttons">
-    <a class="button is-primary" href="/bible/{previous.book}/{previous.chapter}">&lt; Previous</a>
+    <a class="button is-primary" href="/bible/{previous.book}/{previous.chapter}" bind:this={leftButton}>&lt; Previous</a>
     <div class="button">{book} {chapter}</div>
-    <a class="button is-primary" href="/bible/{next.book}/{next.chapter}">Next &gt;</a>
+    <a class="button is-primary" href="/bible/{next.book}/{next.chapter}" bind:this={rightButton}>Next &gt;</a>
 </div>

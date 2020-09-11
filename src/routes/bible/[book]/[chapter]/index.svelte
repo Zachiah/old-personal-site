@@ -3,11 +3,11 @@
         const {book,chapter} = page.params;
         
         // Getting the data
-        let verses = (await this.fetch(`/bible/${book}/${chapter}.json`));
+        let verses = (await this.fetch(`/bible/api/${book}/${chapter}.json`));
         if (verses.ok) {
             verses = await verses.json()
-            const next = await (await this.fetch(`/bible/${book}/${chapter}/next.json`)).json();
-            const previous = await (await this.fetch(`/bible/${book}/${chapter}/previous.json`)).json();
+            const next = await (await this.fetch(`/bible/api/${book}/${chapter}/next.json`)).json();
+            const previous = await (await this.fetch(`/bible/api/${book}/${chapter}/previous.json`)).json();
 
             // props to out component
             return {
@@ -33,10 +33,24 @@
     export let verses;
     export let next;
     export let previous;
+    
+    let leftButton;
+    let rightButton;
+    
+    function handleKeyup(event) {
+        switch (event.keyCode) {
+            case 37: // LEFT
+                leftButton.click();
+                break
+            case 39: // RIGHT
+                rightButton.click();
+                break
+        }
+    }
 
 </script>
 
-<style>
+<style lang="scss">
     .verses-wrapper {
         text-align: justify;
         width: 100%;
@@ -45,9 +59,10 @@
     }
 </style>
 
+<svelte:body on:keyup={handleKeyup} />
 
 <div class="verses-wrapper">
-    <ChapterHeader {book} {chapter} {next} {previous} />
+    <ChapterHeader {book} {chapter} {next} {previous} bind:leftButton={leftButton} bind:rightButton={rightButton} />
     <div class="verses">
         {#each verses as verse}
             <Verse {verse} />

@@ -1,4 +1,4 @@
-import getChapters from "./_getChapters";
+import getChapters from "../_getChapters";
 import books from "/data/kjv/books.js";
 
 export async function get(req,res,next) {
