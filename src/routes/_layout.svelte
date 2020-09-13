@@ -1,12 +1,13 @@
 <script>
-	import "bulma/css/bulma.min.css";
+	
 
 	import Nav from "../components/Nav.svelte"
 
 	export let segment;
 </script>
 
-<style>
+<style lang="scss">
+	@import "bulma/bulma.sass";
 </style>
 
 <Nav {segment} />

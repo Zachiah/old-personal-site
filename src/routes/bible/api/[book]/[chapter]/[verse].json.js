@@ -1,6 +1,7 @@
-import validateBook from "../../../_validateBook";
+import validateBook from "/routes/bible/_validateBook.js";
 
 export async function get(req,res,next) {
+    console.log("[verse].json.js");
     let {book,chapter,verse} = req.params;
     chapter = parseInt(chapter) -1;
     verse = parseInt(verse) - 1;

@@ -1,7 +1,7 @@
 <script context="module">
     export async function preload(page,session) {
         return {
-            books: await (await this.fetch('/bible/api/books-with-chapters.json')).json()
+            books: await (await this.fetch('/bible/api/references.json')).json()
         }
     }
 </script>

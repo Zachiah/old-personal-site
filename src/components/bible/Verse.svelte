@@ -1,8 +1,16 @@
 <script>
+    import highlightWithHash from "/actions/highlightWithHash.js";
+
+    export let book;
+    export let chapter;
     export let verse;
+    export let text;
+    export let hasId = true;
+
+    $: id = hasId ? `${book}_${chapter}_${verse}` : null;
 </script>
 
-<style>
+<style lang="scss">
     .verse {
         border-top: 0.5px solid black;
         clear: both;
@@ -20,7 +28,7 @@
     }
 </style>
 
-<div class="verse">
-    <div class="verse-ref">{verse.verse}</div>
-    <article>{verse.text}</article>
+<div class="verse" use:highlightWithHash={{color: "#00d1b2", dur: 2000}} {id}>
+    <div class="verse-ref">{verse}</div>
+    <article>{text}</article>
 </div>

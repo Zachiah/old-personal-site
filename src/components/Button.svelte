@@ -1,10 +1,13 @@
 <script>
-import Error from "../routes/_error.svelte";
+    let _className = "";
+    export {_className as class};
 
+    export let button = null;
     export let primary = false;
     export let secondary = false;
     export let danger = false;
     export let warning = false;
+
 
     export let href = undefined;
 
@@ -16,23 +19,23 @@ import Error from "../routes/_error.svelte";
 
     const conClass = (value,className) => value ? className : '';
 
-    $: className = `button ${conClass(primary,'is-primary')} ${conClass(secondary,'is-secondary')} ${conClass(danger,'is-danger')} ${conClass(warning,'is-warning')}`;
+    $: className = `button ${conClass(primary,'is-primary')} ${conClass(secondary,'is-secondary')} ${conClass(danger,'is-danger')} ${conClass(warning,'is-warning')} ${_className}`.trim();
 </script>
 
 {#if tag === "button"}
-    <button class={className} on:click>
+    <button class={className} bind:this={button} on:click {...$$restProps}>
         <slot></slot>
     </button>
 {:else if tag === "span"}
-    <span class={className} on:click>
+    <span class={className} bind:this={button} on:click {...$$restProps}>
         <slot></slot>
     </span>
 {:else if tag === "div"}
-    <div class={className} on:click>
+    <div class={className} bind:this={button} on:click {...$$restProps}>
         <slot></slot>
     </div>
 {:else if tag == "a"}
-    <a class={className} {href} on:click>
+    <a class={className} {href}  bind:this={button} on:click {...$$restProps}>
         <slot></slot>
     </a>
 {/if}

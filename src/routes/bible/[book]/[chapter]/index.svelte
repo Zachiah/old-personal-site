@@ -1,3 +1,5 @@
+<!--TODO: add hammer js and support swiping-->
+
 <script context="module">
     export async function preload(page,session) {
         const {book,chapter} = page.params;
@@ -25,6 +27,7 @@
 <script>
     import ChapterHeader from "/components/bible/ChapterHeader.svelte";
     import Verse from "/components/bible/Verse.svelte";
+    import VerseContainer from "/components/bible/VerseContainer.svelte"
 
 
 
@@ -48,26 +51,21 @@
         }
     }
 
+    $: if (process.browser) localStorage.setItem('bible-lastChapter', `${book} ${chapter}`);
+
 </script>
 
-<style lang="scss">
-    .verses-wrapper {
-        text-align: justify;
-        width: 100%;
-        max-width: 35.5em;
-        margin: auto;
-    }
-</style>
+
 
 <svelte:body on:keyup={handleKeyup} />
 
-<div class="verses-wrapper">
+<VerseContainer>
     <ChapterHeader {book} {chapter} {next} {previous} bind:leftButton={leftButton} bind:rightButton={rightButton} />
     <div class="verses">
         {#each verses as verse}
-            <Verse {verse} />
+            <Verse {book} {chapter} {...verse}/>
         {/each}
     </div>
     <ChapterHeader {book} {chapter} {next} {previous} />
-</div>
+</VerseContainer>
 

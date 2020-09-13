@@ -3,7 +3,6 @@
         let {grid} = page.params;
 
         grid = grid.split("_").map(item => item.split("-").map(item2 => parseInt(item2)));
-        console.log("grid",grid);
         function countedToMade(arr) {
             let made = [];
             let cur = 0;
@@ -25,7 +24,6 @@
     import ConwayLife from "/components/conway-life/ConwayLife.svelte";
     export let grid;
 
-    console.log(grid);
 </script>
 
 <ConwayLife {grid} />
