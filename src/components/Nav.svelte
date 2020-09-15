@@ -21,7 +21,7 @@
     export let segment;
     let active = false;
 
-    const links = ['math-problems','spirograph','conway-life'];
+    const links = ['math-problems','spirograph','conway-life', 'bible'];
 
     function pathToHuman(path) {
         return path.split("-").map(item => item[0].toUpperCase() + item.substring(1)).join(" ")

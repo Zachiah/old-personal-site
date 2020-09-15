@@ -23,19 +23,19 @@
 </script>
 
 {#if tag === "button"}
-    <button class={className} bind:this={button} on:click {...$$restProps}>
+    <button class={className} bind:this={button} on:click on:blur on:focus {...$$restProps}>
         <slot></slot>
     </button>
 {:else if tag === "span"}
-    <span class={className} bind:this={button} on:click {...$$restProps}>
+    <span class={className} bind:this={button} on:click on:blur on:focus {...$$restProps}>
         <slot></slot>
     </span>
 {:else if tag === "div"}
-    <div class={className} bind:this={button} on:click {...$$restProps}>
+    <div class={className} bind:this={button} on:click on:blur on:focus {...$$restProps}>
         <slot></slot>
     </div>
 {:else if tag == "a"}
-    <a class={className} {href}  bind:this={button} on:click {...$$restProps}>
+    <a class={className} {href}  bind:this={button} on:click on:blur on:focus {...$$restProps}>
         <slot></slot>
     </a>
 {/if}

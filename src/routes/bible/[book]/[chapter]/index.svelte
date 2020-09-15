@@ -27,9 +27,8 @@
 <script>
     import ChapterHeader from "/components/bible/ChapterHeader.svelte";
     import Verse from "/components/bible/Verse.svelte";
-    import VerseContainer from "/components/bible/VerseContainer.svelte"
-
-
+    import VerseContainer from "/components/bible/VerseContainer.svelte";
+    import BookmarksManager from "/components/bible/BookmarksManager.svelte";
 
     export let book;
     export let chapter;
@@ -41,18 +40,19 @@
     let rightButton;
     
     function handleKeyup(event) {
-        switch (event.keyCode) {
-            case 37: // LEFT
-                leftButton.click();
-                break
-            case 39: // RIGHT
-                rightButton.click();
-                break
+        if (event.target.nodeName !== "INPUT") {
+            switch (event.keyCode) {
+                case 37: // LEFT
+                    leftButton.click();
+                    break
+                case 39: // RIGHT
+                    rightButton.click();
+                    break
+            }
         }
     }
 
     $: if (process.browser) localStorage.setItem('bible-lastChapter', `${book} ${chapter}`);
-
 </script>
 
 
@@ -60,6 +60,8 @@
 <svelte:body on:keyup={handleKeyup} />
 
 <VerseContainer>
+    <BookmarksManager {book} {chapter}/>
+
     <ChapterHeader {book} {chapter} {next} {previous} bind:leftButton={leftButton} bind:rightButton={rightButton} />
     <div class="verses">
         {#each verses as verse}

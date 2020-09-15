@@ -14,6 +14,7 @@
 
     export let type = "text";
 
+    export let placeholder = "";
     total++;
 </script>
 
@@ -25,9 +26,9 @@
 
     <div class="control">
         {#if type === "text"}
-            <input type="text" class="input" id="text-field-{total}" {disabled} bind:value />
+            <input type="text" class="input" id="text-field-{total}" {disabled} bind:value {placeholder} />
         {:else if type === "number"}
-            <input type="number" class="input" id="text-field-{total}" {disabled} bind:value />
+            <input type="number" class="input" id="text-field-{total}" {disabled} bind:value {placeholder}/>
         {:else}
             That input type isn't supported sorry
         {/if}
