@@ -1,7 +1,7 @@
 {
   "name": "zachiah-sawyer-site",
   "description": "Zachiah Sawyer's personal site",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "repository": "https://github.com/zachiah/zachiah-sawyer-site",
   "scripts": {
     "dev": "sapper dev",
@@ -13,6 +13,7 @@
     "test": "run-p --race dev cy:run"
   },
   "dependencies": {
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^6.0.0",
     "bulma": "^0.9.0",
     "compression": "^1.7.1",

@@ -1,5 +1,6 @@
 import validateBook from "../../../_validateBook";
 import books from "/data/kjv/books.js";
+import bible from "/routes/bible/_getBible.js";
 
 export async function get(req,res,next) {
     let {book,chapter} = req.params;
@@ -7,7 +8,7 @@ export async function get(req,res,next) {
     let chapterIndex = chapter -1;
 
     if (await validateBook(book)) {
-        let bookJSON = require(`../../../src/data/kjv/${book}.json`);
+        let bookJSON = bible[book];
         if (chapterIndex in bookJSON.chapters) {
             res.setHeader('Content-Type', 'application/json');
 

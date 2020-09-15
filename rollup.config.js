@@ -9,6 +9,7 @@ import pkg from './package.json';
 import rootImport from 'rollup-plugin-root-import';
 import autoPreprocess from 'svelte-preprocess';
 import sass from 'rollup-plugin-sass';
+import json from '@rollup/plugin-json';
 
 
 const mode = process.env.NODE_ENV;
@@ -43,7 +44,8 @@ export default {
 				browser: true,
 				dedupe: ['svelte'],
 			}),
-            commonjs(),
+			commonjs(),
+			json(),
 
 
 			legacy && babel({
@@ -90,6 +92,7 @@ export default {
 				preprocess: autoPreprocess()
 			}),
 			sass(),
+			json(),
 			resolve({
 				dedupe: ['svelte'],
 			}),

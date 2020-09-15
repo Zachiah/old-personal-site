@@ -1,3 +1,5 @@
+import bible from "./_getBible";
+
 export default async function (book) {
-    return require(`../../../src/data/kjv/${book}.json`).chapters.map(item => parseInt(item.chapter));
+    return bible[book].chapters.map(item => parseInt(item.chapter));
 }
