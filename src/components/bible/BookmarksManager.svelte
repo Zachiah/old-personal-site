@@ -50,7 +50,7 @@
                 Set to current
             </Button>
 
-            <Button class="mr-2" href="/bible/{bookmark.book}/{bookmark.chapter}">Go</Button>
+            <Button primary class="mr-2" href="/bible/{bookmark.book}/{bookmark.chapter}">Go</Button>
 
             <Button on:click={() => handleDelete(index)} danger>Delete</Button>
         </DropdownItem>

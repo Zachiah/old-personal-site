@@ -47,6 +47,18 @@
         align-self: center;
         margin-right: 0.5em;
     }
+    @media (max-width: 750px) {
+        .the-container {
+            flex-direction: column;
+        }
+        .the-container > * {
+            width: 100%;
+        }
+        .the-container .select select {
+            margin: 0;
+            width: 100%;
+        }
+    }
 </style>
 
 <div class="the-container">
