@@ -21,7 +21,7 @@
     }
 
     const handleSetToCurrent = (index) => {
-        $bookmarks[index] = {...bookmark, book, chapter};
+        $bookmarks[index] = {...$bookmarks[index], book, chapter};
     }
 
     const handleBookmarkCurrent = () => {
