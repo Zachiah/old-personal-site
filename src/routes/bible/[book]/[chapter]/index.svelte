@@ -62,7 +62,7 @@
 <VerseContainer>
     <BookmarksManager {book} {chapter}/>
 
-    <ChapterHeader {book} {chapter} {next} {previous} bind:leftButton={leftButton} bind:rightButton={rightButton} />
+    <ChapterHeader {book} {chapter} {next} {previous} bind:leftButton={leftButton} bind:rightButton={rightButton} floating />
     <div class="verses">
         {#each verses as verse}
             <Verse {book} {chapter} {...verse}/>
