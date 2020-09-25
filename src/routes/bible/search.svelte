@@ -3,9 +3,9 @@
 
     export async function preload(page,session) {
         
-        const {exactMatch,search,caseSensitive} = page.query;
+        const {exactMatch,search,caseSensitive, wholeWords} = page.query;
 
-        const baseUrl = getSearchString(search, exactMatch,caseSensitive) + "&page=";
+        const baseUrl = getSearchString(search, exactMatch,caseSensitive,wholeWords) + "&page=";
         const baseApiUrl = baseUrl.replace("/bible/search", "/bible/api/search.json");
 
         let pageNum = page.query.page;

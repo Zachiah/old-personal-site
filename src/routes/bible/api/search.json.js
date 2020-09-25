@@ -22,16 +22,30 @@ export async function get(req,res,next) {
 
     const foundIt = (text) => {
         if (query.exactMatch) {
-            return caseBasedText(text).indexOf(caseBasedText(query.search)) !== -1;
+            if (query.wholeWords) {
+                return ` ${caseBasedText(text)} `.indexOf(` ${caseBasedText(query.search)} `) !== -1;
+            }
+            else {
+                return caseBasedText(text).indexOf(caseBasedText(query.search)) !== -1;
+            }
         }
         else {
-            let result = query.search;
-            result = result.split(" ")
+            let words = query.search;
+            words = words.split(" ")
             
-            result = result.reduce(
-                (prev, word) => prev && (caseBasedText(text).indexOf(caseBasedText(word)) !== -1),
-                true
-            );
+            let result;
+            if (query.wholeWords) {
+                result = words.reduce(
+                    (prev,word) => prev && (caseBasedText(text).split(" ").indexOf(caseBasedText(word)) !== -1),
+                    true
+                );
+            }
+            else {
+                result = words.reduce(
+                    (prev, word) => prev && (caseBasedText(text).indexOf(caseBasedText(word)) !== -1),
+                    true
+                );
+            }
 
             return result;
 
@@ -40,10 +54,21 @@ export async function get(req,res,next) {
 
     function anotatedTextReplacer(text, string) {
         if (query.caseSensitive) {
-            return text.replace(new RegExp(`(${escapeRegExp(string)})`, "g"), `<b>${string}</b>`);
+            if (query.wholeWords) {
+                return ` ${text} `.replace(new RegExp(` (${escapeRegExp(string)}) `, "g"), ` <b>$1</b> `).trim();
+            }
+            else {
+                return text.replace(new RegExp(`(${escapeRegExp(string)})`, "g"), `<b>$1</b>`);
+            }
         }
         else {
-            return text.replace(new RegExp(`(${escapeRegExp(string)})`, "ig"), `<b>$1</b>`);
+            if (query.wholeWords) {
+                return ` ${text} `.replace(new RegExp(` (${escapeRegExp(string)}) `, "ig"), ` <b>$1</b> `).trim();
+            }
+            else {
+                return text.replace(new RegExp(`(${escapeRegExp(string)})`, "ig"), `<b>$1</b>`);
+            }
+            
         }
     }
 
@@ -81,9 +106,9 @@ export async function get(req,res,next) {
             const amountPerPage = 80;
             highestPage = Math.ceil(results.length / amountPerPage);
             let page = parseInt(query.page);
-            if (!isNaN(page) && (page <= highestPage) && (page > 0)) {
+            if (!isNaN(page) && ((page <= highestPage) || (results.length === 0)) && (page > 0)) {
                 results = results.slice((page - 1) * amountPerPage, page * amountPerPage);
-                if (page === highestPage) {
+                if (page === highestPage || highestPage === 0) {
                     lastPage = true;
                 }
             } else {

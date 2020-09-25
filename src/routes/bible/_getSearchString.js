@@ -3,6 +3,6 @@ function qs(name, value) {
     return value ? `&${name}=${value}` : ``;
 }
 
-export default function (search, exactMatch, caseSensitive) {
-    return `/bible/search?search=${search}${qs('caseSensitive', caseSensitive)}${qs('exactMatch',exactMatch)}`;
+export default function (search, exactMatch, caseSensitive,wholeWords) {
+    return `/bible/search?search=${search}${qs('caseSensitive', caseSensitive)}${qs('exactMatch',exactMatch)}${qs('wholeWords',wholeWords)}`;
 }

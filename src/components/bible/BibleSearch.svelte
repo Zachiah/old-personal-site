@@ -8,6 +8,7 @@
     let value = "";
     let caseSensitive = false;
     let exactMatch = false;
+    let wholeWords = false;
 
 
 
@@ -18,7 +19,7 @@
 
     function go() {
         if (!isDisabled(value)) {
-            goto(getSearchString(value, exactMatch, caseSensitive));
+            goto(getSearchString(value, exactMatch, caseSensitive,wholeWords));
         }
     }
 </script>
@@ -33,6 +34,7 @@
         <TextField bind:value={value} />
         <Checkbox bind:checked={caseSensitive}>Case Sensitive</Checkbox>
         <Checkbox bind:checked={exactMatch}>Exact Match</Checkbox>
+        <Checkbox bind:checked={wholeWords}>Whole Words</Checkbox>
     </div>
 
     <div class="card-footer">
