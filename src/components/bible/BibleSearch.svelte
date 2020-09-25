@@ -22,6 +22,8 @@
             goto(getSearchString(value, exactMatch, caseSensitive,wholeWords));
         }
     }
+
+    $: value = value.replace("'", '’')
 </script>
 
 <form on:submit|preventDefault={go} class="mb-4">

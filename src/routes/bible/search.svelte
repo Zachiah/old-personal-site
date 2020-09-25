@@ -34,12 +34,31 @@
 <script>
     import Verse from "/components/bible/Verse.svelte";
     import Button from "/components/Button.svelte";
+    import PrevNextHeader from "/components/bible/PrevNextHeader.svelte";
 
     export let data;
     export let pageNum;
     export let prev;
     export let next;
+
+    let prevButton;
+    let nextButton;
+
+    function handleKeyup(event) {
+        if (event.target.nodeName !== "INPUT") {
+            switch (event.keyCode) {
+                case 37: // LEFT
+                    prevButton.click();
+                    break
+                case 39: // RIGHT
+                    nextButton.click();
+                    break
+            }
+        }
+    }
 </script>
+
+<svelte:body on:keyup={handleKeyup} />
 
 
 {#if data.results.length > 0}
@@ -54,6 +73,10 @@
     {#if next !== null}
         <Button href={next}>Next</Button>
     {/if}
+
+    <PrevNextHeader prevHref={prev} nextHref={next} showPrev={prev !== null} showNext={next !== null} bind:prevButton bind:nextButton>
+        Page {pageNum}
+    </PrevNextHeader>
 {:else}
     There ain't not'in that matches you're search criteria. Please try somethin' else.
 {/if}
