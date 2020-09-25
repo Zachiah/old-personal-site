@@ -8,7 +8,9 @@
 
 <script>
     import VersePicker from "/components/bible/VersePicker.svelte";
+    import VerseContainer from "/components/bible/VerseContainer.svelte";
     import Header from "/components/Header.svelte";
+    import BibleSearch from "/components/bible/BibleSearch.svelte";
 
     import {bookmarks} from "/stores/bible.store.js";
 
@@ -17,7 +19,11 @@
     export let books;
 </script>
 
+
 <Header>KJV Bible</Header>
 <VersePicker {books}/>
 
-<slot></slot>
+<VerseContainer>
+    <BibleSearch/>
+    <slot></slot>
+</VerseContainer>

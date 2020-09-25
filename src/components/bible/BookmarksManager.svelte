@@ -39,7 +39,8 @@
 <CollapsiblePain title="Bookmarks">
     {#each $bookmarks as bookmark, index}
         <DropdownItem style="display: flex;">
-            <span class="mr-2">{bookmark.name} | {bookmark.book} {bookmark.chapter}</span>
+            <span class="mr-2">{bookmark.book} {bookmark.chapter}</span>
+            <span class="mr-2"><TextField bind:value={$bookmarks[index].name} inline>{bookmark.book} {bookmark.chapter}</TextField></span>
 
             <Button
                 style="margin-left: auto"

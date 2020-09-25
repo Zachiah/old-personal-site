@@ -21,24 +21,16 @@
 
 <script>
     import Verse from "/components/bible/Verse.svelte";
-    import VerseContainer from "/components/bible/VerseContainer.svelte";
     import Button from "/components/Button.svelte";
-
-
 
     export let book;
     export let chapter;
     export let verse;
     export let text;
-    
-    let leftButton;
-    let rightButton;
 
 </script>
 
 
-<VerseContainer>
-    <Button primary class="mb-2" href="/bible/{book}/{chapter}#{book}_{chapter}_{verse}">Full Chapter</Button>
-    <Verse {book} {chapter} {verse} {text}/>
-</VerseContainer>
+<Button primary class="mb-2" href="/bible/{book}/{chapter}#{book}_{chapter}_{verse}">Full Chapter</Button>
+<Verse {book} {chapter} {verse} {text}/>
 

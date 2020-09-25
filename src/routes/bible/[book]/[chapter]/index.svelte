@@ -27,7 +27,6 @@
 <script>
     import ChapterHeader from "/components/bible/ChapterHeader.svelte";
     import Verse from "/components/bible/Verse.svelte";
-    import VerseContainer from "/components/bible/VerseContainer.svelte";
     import BookmarksManager from "/components/bible/BookmarksManager.svelte";
 
     export let book;
@@ -59,7 +58,6 @@
 
 <svelte:body on:keyup={handleKeyup} />
 
-<VerseContainer>
     <BookmarksManager {book} {chapter}/>
 
     <ChapterHeader {book} {chapter} {next} {previous} bind:leftButton={leftButton} bind:rightButton={rightButton} floating />
@@ -69,5 +67,4 @@
         {/each}
     </div>
     <ChapterHeader {book} {chapter} {next} {previous} />
-</VerseContainer>
 
