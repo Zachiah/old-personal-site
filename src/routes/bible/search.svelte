@@ -21,7 +21,11 @@
                 data,
                 pageNum,
                 prev: (+pageNum === 1) ? null : baseUrl + (pageNum-1),
-                next: (+pageNum === +data.highestPage) ? null : baseUrl + (+pageNum+1)
+                next: (+pageNum === +data.highestPage) ? null : baseUrl + (+pageNum+1),
+                exactMatch,
+                search,
+                caseSensitive,
+                wholeWords
             }
         } else {
             this.error(404,'not found')
@@ -35,11 +39,21 @@
     import Verse from "/components/bible/Verse.svelte";
     import Button from "/components/Button.svelte";
     import PrevNextHeader from "/components/bible/PrevNextHeader.svelte";
+    import {searchText, searchExactMatch,searchCaseSensitive,searchWholeWords} from "/stores/bible.store.js";
 
     export let data;
     export let pageNum;
     export let prev;
     export let next;
+    export let search;
+    export let exactMatch;
+    export let caseSensitive;
+    export let wholeWords;
+
+    $: $searchText = search;
+    $: $searchExactMatch = exactMatch;
+    $: $searchCaseSensitive = caseSensitive;
+    $: $searchWholeWords = wholeWords;
 
     let prevButton;
     let nextButton;
@@ -67,15 +81,9 @@
             {@html verse.anotatedText}
         </Verse>
     {/each}
-    {#if prev !== null}
-        <Button href={prev}>Prev</Button>
-    {/if}
-    {#if next !== null}
-        <Button href={next}>Next</Button>
-    {/if}
-
+    
     <PrevNextHeader prevHref={prev} nextHref={next} showPrev={prev !== null} showNext={next !== null} bind:prevButton bind:nextButton>
-        Page {pageNum}
+        Page {pageNum} of {data.highestPage}
     </PrevNextHeader>
 {:else}
     There ain't not'in that matches you're search criteria. Please try somethin' else.

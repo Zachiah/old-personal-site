@@ -4,12 +4,8 @@
     import Button from "/components/Button.svelte";
     import {goto} from "@sapper/app";
     import getSearchString from "/routes/bible/_getSearchString.js";
-
-    let value = "";
-    let caseSensitive = false;
-    let exactMatch = false;
-    let wholeWords = false;
-
+    import CollapsibleCard from "/components/CollapsibleCard.svelte";
+    import {searchText, storageItems,searchCaseSensitive,searchExactMatch,searchWholeWords} from "/stores/bible.store.js";
 
 
     function isDisabled(value) {
@@ -18,31 +14,27 @@
     }
 
     function go() {
-        if (!isDisabled(value)) {
-            goto(getSearchString(value, exactMatch, caseSensitive,wholeWords));
+        if (!isDisabled($searchText)) {
+            goto(getSearchString($searchText, $searchExactMatch, $searchCaseSensitive,$searchWholeWords));
         }
     }
 
-    $: value = value.replace("'", '’')
+    $: $searchText = $searchText.replace("'", '’');
 </script>
 
 <form on:submit|preventDefault={go} class="mb-4">
-<div class="card mt-5">
-    <div class="card-header">
-        <div class="card-header-title">Search</div>
-    </div>
-
-    <div class="card-content">
-        <TextField bind:value={value} />
-        <Checkbox bind:checked={caseSensitive}>Case Sensitive</Checkbox>
-        <Checkbox bind:checked={exactMatch}>Exact Match</Checkbox>
-        <Checkbox bind:checked={wholeWords}>Whole Words</Checkbox>
-    </div>
-
-    <div class="card-footer">
-        <div class="card-footer-item">
-            <Button primary  disabled={isDisabled(value)} type="submit">Go</Button>
+    <CollapsibleCard title="Search">
+        <div slot="content">
+            <TextField bind:value={$searchText} />
+            <Checkbox bind:checked={$searchCaseSensitive}>Case Sensitive</Checkbox>
+            <Checkbox bind:checked={$searchExactMatch}>Exact Match</Checkbox>
+            <Checkbox bind:checked={$searchWholeWords}>Whole Words</Checkbox>
         </div>
-    </div>
-</div>
+
+        <div slot="footer">
+            <div class="card-footer-item">
+                <Button primary  disabled={isDisabled($searchText)} type="submit">Go</Button>
+            </div>
+        </div>
+    </CollapsibleCard>
 </form>
