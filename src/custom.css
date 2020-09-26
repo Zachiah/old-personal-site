@@ -1,0 +1,6 @@
+.dc {
+    display: contents;
+}
+input[type="checkbox"][disabled] {
+    cursor: not-allowed !important;
+}

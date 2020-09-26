@@ -1,24 +1,11 @@
 import bible from "../_getBible.js";
+import parseRegex from "/routes/bible/_parseRegex.js";
 
 export async function get(req,res,next) {
     const query = req.query;
 
     // helper function to handle getting the right case of text based on the users options
     const caseBasedText = (text) => query.caseSensitive ? text : text.toLowerCase();
-
-    // /* <FOUND IT FUNCTION> checks if the search is in the text */
-    // const foundIt = (text) => query.exactMatch ?
-    //     // They want an exact match, this doesn't include case as case is a separate option
-    //     (caseBasedText(text).indexOf(caseBasedText(query.search)) !== -1) :
-    //     // The don't care about exact matches
-    //     (query
-    //         .search
-    //         .split(" ")
-    //         .reduce(
-    //             (prev, word) => prev && (caseBasedText(text).indexOf(caseBasedText(word)) !== -1),
-    //             true
-    //         ));
-    // /* </FOUND IT FUNCTION> */
 
     const foundIt = (text) => {
         if (query.exactMatch) {
@@ -72,6 +59,16 @@ export async function get(req,res,next) {
         }
     }
 
+    function createRegexAnotatedTextReplacer(regexString) {
+        let theRegex = parseRegex(regexString);
+
+        if (!theRegex) {
+            return null;
+        }
+
+        return someString => someString.replace(theRegex, '<b>$1</b>');
+    }
+
     function escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
     }
@@ -80,21 +77,35 @@ export async function get(req,res,next) {
         let ok = true;
         let results = [];
 
+        let regexReplacer;
+        if (query.regex) {
+            regexReplacer = createRegexAnotatedTextReplacer(query.search);
+        }
+
         for (let book in bible) {
             for (let chapter of bible[book].chapters) {
                 for (let verse of chapter.verses) {
-                    if (foundIt(verse.text)) {
-                        let anotatedText = verse.text;
-                        if (query.exactMatch) {
-                            anotatedText = anotatedTextReplacer(anotatedText, query.search);
-                        } else {
-                            for (let word of query.search.split(" ").sort((a,b) => b.length - a.length)) {
-                                anotatedText = anotatedTextReplacer(anotatedText, word);
-                            }
+                    if (query.regex) {
+                        const anotatedText = regexReplacer(verse.text);
+                        if (anotatedText !== verse.text) {
+                            results.push({...verse,chapter: chapter.chapter, book, anotatedText});
                         }
-
-                        results.push({...verse, chapter: chapter.chapter, book,anotatedText})
                     }
+                    else {
+                        if (foundIt(verse.text)) {
+                            let anotatedText = verse.text;
+                            if (query.exactMatch) {
+                                anotatedText = anotatedTextReplacer(anotatedText, query.search);
+                            } else {
+                                for (let word of query.search.split(" ").sort((a,b) => b.length - a.length)) {
+                                    anotatedText = anotatedTextReplacer(anotatedText, word);
+                                }
+                            }
+    
+                            results.push({...verse, chapter: chapter.chapter, book,anotatedText});
+                        }
+                    }
+
                 }
             }
         }

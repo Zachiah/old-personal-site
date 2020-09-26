@@ -5,12 +5,20 @@ export let storageItems = {
     searchText: 'bible-search-text',
     searchCaseSensitive: 'bible-search_case_sensitive',
     searchExactMatch: 'bible-search_exact_match',
-    searchWholeWords: 'bible-search_whole_words'
+    searchWholeWords: 'bible-search_whole_words',
+    searchRegex: 'bible-search_regex',
 }
 
+function createWritableStoreFromLocalStorage(key, defaultValue) {
+    let localStorageKey = storageItems[key];
+    let  data = process.browser && JSON.parse(localStorage.getItem(storageItems[localStorageKey]))
+
+    return writable(process.browser ? (data || defaultValue) : defaultValue);
+}
 
 export let bookmarks = writable(process.browser && JSON.parse(localStorage.getItem(storageItems.bookmarks)) || []);
-export let searchText = writable(process.browser ? (JSON.parse(localStorage.getItem(storageItems.searchText)) || "") : "");
-export let searchCaseSensitive = writable(process.browser ? (JSON.parse(localStorage.getItem(storageItems.searchCaseSensitive)) || false) : false);
-export let searchExactMatch = writable(process.browser ? (JSON.parse(localStorage.getItem(storageItems.searchExactMatch)) || false) : false);
-export let searchWholeWords = writable(process.browser ? (JSON.parse(localStorage.getItem(storageItems.searchWholeWords)) || false) : false);
+export let searchText = createWritableStoreFromLocalStorage('searchText', "");
+export let searchCaseSensitive = createWritableStoreFromLocalStorage('searchCaseSensitive',false);
+export let searchExactMatch = createWritableStoreFromLocalStorage('searchExactMatch',false);
+export let searchWholeWords = createWritableStoreFromLocalStorage('searchWholeWords', false);
+export let searchRegex = createWritableStoreFromLocalStorage('searchRegex', false);

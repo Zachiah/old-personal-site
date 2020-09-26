@@ -3,9 +3,9 @@
 
     export async function preload(page,session) {
         
-        const {exactMatch,search,caseSensitive, wholeWords} = page.query;
+        const {exactMatch,search,caseSensitive, wholeWords, regex} = page.query;
 
-        const baseUrl = getSearchString(search, exactMatch,caseSensitive,wholeWords) + "&page=";
+        const baseUrl = getSearchString(search, exactMatch,caseSensitive,wholeWords,regex) + "&page=";
         const baseApiUrl = baseUrl.replace("/bible/search", "/bible/api/search.json");
 
         let pageNum = page.query.page;
@@ -25,7 +25,8 @@
                 exactMatch,
                 search,
                 caseSensitive,
-                wholeWords
+                wholeWords,
+                regex
             }
         } else {
             this.error(404,'not found')
@@ -39,7 +40,7 @@
     import Verse from "/components/bible/Verse.svelte";
     import Button from "/components/Button.svelte";
     import PrevNextHeader from "/components/bible/PrevNextHeader.svelte";
-    import {searchText, searchExactMatch,searchCaseSensitive,searchWholeWords} from "/stores/bible.store.js";
+    import {searchText, searchExactMatch,searchCaseSensitive,searchWholeWords,searchRegex} from "/stores/bible.store.js";
 
     export let data;
     export let pageNum;
@@ -49,11 +50,13 @@
     export let exactMatch;
     export let caseSensitive;
     export let wholeWords;
+    export let regex;
 
     $: $searchText = search;
     $: $searchExactMatch = exactMatch;
     $: $searchCaseSensitive = caseSensitive;
     $: $searchWholeWords = wholeWords;
+    $: $searchRegex = regex;
 
     let prevButton;
     let nextButton;
