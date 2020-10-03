@@ -1,0 +1,1 @@
+export { FirebaseApp, User, Doc, Collection } from "sveltefire/src/index.js";

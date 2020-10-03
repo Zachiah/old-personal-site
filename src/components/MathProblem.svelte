@@ -39,6 +39,8 @@
     export let tile = false;
     export let link = true;
 
+    console.log(mathProblem.id)
+
     let bgColor = colors[mathProblem.id % colors.length][0];
     let textColor = colors[mathProblem.id % colors.length][1];
 
