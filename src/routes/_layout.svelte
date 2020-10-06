@@ -3,12 +3,15 @@
 	import "bulma/css/bulma.min.css";
 	import "/custom.css";
 	import Nav from "../components/Nav.svelte";
+	import TailwindCss from "/components/TailwindCss.svelte";
 
 	import firebase from "firebase/app";
 	import { FirebaseApp, User, Doc, Collection } from "/sveltefire.js";
 
 	export let segment;
 </script>
+
+<TailwindCss />
 
 <FirebaseApp {firebase}>
 	<Nav {segment} />

@@ -21,4 +21,8 @@
         <a href="/math-problems" class="button is-primary">Back to Math Problems</a>
     </p>
     <MathProblem mathProblem={{...mathProblem,id}} link={false} />
+
+    <div slot="fallback">
+        That problem wasn't found sorry. <a href="/math-problems" class="text-blue-600 cursor-pointer">View all problems</a>
+    </div>
 </Doc>

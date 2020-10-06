@@ -37,7 +37,7 @@ export default {
 				dev,
 				hydratable: true,
 				emitCss: true,
-				preprocess: autoPreprocess()
+				preprocess: autoPreprocess({postcss: true})
 			}),
 			sass(),
 			resolve({
@@ -89,7 +89,7 @@ export default {
 				generate: 'ssr',
 				hydratable: true,
 				dev,
-				preprocess: autoPreprocess()
+				preprocess: autoPreprocess({postcss:true})
 			}),
 			sass(),
 			json(),
