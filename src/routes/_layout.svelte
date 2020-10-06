@@ -8,7 +8,20 @@
 	import firebase from "firebase/app";
 	import { FirebaseApp, User, Doc, Collection } from "/sveltefire.js";
 
+	import {lastPath} from "/stores/auth.store.js";
+
+	import {stores} from "@sapper/app";
+	const {page} = stores();
+
+	page.subscribe((v) => {
+		if (v.path !== '/sign-in' && v.path !== '/sign-up') {
+			$lastPath = v.path;
+			console.log(v.path);
+		}
+	});
+
 	export let segment;
+
 </script>
 
 <TailwindCss />

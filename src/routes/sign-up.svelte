@@ -9,6 +9,8 @@
 
     import {goto} from "@sapper/app";
 
+    import {lastPath} from "/stores/auth.store.js";
+
     let hasMounted = false;
     onMount(() => {
         hasMounted = true;
@@ -26,7 +28,7 @@
             
             try {
                 await auth.createUserWithEmailAndPassword(email,password);
-                await goto('/');
+                await goto($lastPath);
             } catch (e) {
                 loading = false;
                 console.log(e)
