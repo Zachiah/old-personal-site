@@ -5,8 +5,15 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {},
+    extend: {
+      maxWidth: {
+        "fit-content": "fit-content"
+      }
+    },
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+    visiblity: ['responsive', 'group-hover', 'hover']
+  },
   plugins: [],
 }

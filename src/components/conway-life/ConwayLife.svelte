@@ -1,6 +1,7 @@
 <script>
+    import Button from "/components/form/Button.svelte";
     import Square from "/components/conway-life/Square.svelte";
-    import TextField from "/components/TextField.svelte";
+    import TextField from "/components/old/TextField.svelte";
     import Header from "/components/Header.svelte"
     import {onMount} from "svelte";
 
@@ -177,9 +178,6 @@
 </script>
 
 <style>
-    .row {
-        display: flex;
-    }
     .grid-wrapper {
         flex-grow: 1;
     }
@@ -192,10 +190,6 @@
     }
     .the-buttons {
         width: 20em;
-    }
-    .the-buttons * {
-        display: block;
-        width: 100%;
     }
 
     @media only screen and (max-width: 700px) {
@@ -217,15 +211,15 @@
 
 <div class="parent">
     <div class="the-buttons mr-2">
-        <button class="button is-primary" on:click={() => {grid = nextGrid(grid)}} disabled={active}>Next</button>
-        <button class="button is-secondary" on:click={() => {grid = emptyGrid(gridHeight,gridWidth)}} disabled={active}>Clear</button>
-        <button class="button is-primary" on:click={run} disabled={active}>Run</button>
-        <button class="button is-danger" on:click={() => {clearTimeout(timeout); active = false}} disabled={!active}>Stop</button>
-        <button class="button is-primary" on:click={seedRandom} disabled={active}>Seed Random</button>
-        <button class="button is-primary" on:click={copyAddress} disabled={active}>Copy unique URL</button>
-        <TextField bind:value={waitTime} inline type="number">wait time between iterations (ms)</TextField>
-        <TextField bind:value={gridWidth} inline type="number">Grid Width</TextField>
-        <TextField bind:value={gridHeight} inline type="number">Grid Height</TextField>
+        <Button class="block w-full" on:click={() => {grid = nextGrid(grid)}} disabled={active}>Next</Button>
+        <Button class="block w-full" theme="blue" on:click={() => {grid = emptyGrid(gridHeight,gridWidth)}} disabled={active}>Clear</Button>
+        <Button class="block w-full" on:click={run} disabled={active}>Run</Button>
+        <Button class="block w-full" theme="red" on:click={() => {clearTimeout(timeout); active = false}} disabled={!active}>Stop</Button>
+        <Button class="block w-full" on:click={seedRandom} disabled={active}>Seed Random</Button>
+        <Button class="block w-full" on:click={copyAddress} disabled={active}>Copy unique URL</Button>
+        <TextField class="block w-full" bind:value={waitTime} inline type="number">wait time between iterations (ms)</TextField>
+        <TextField class="block w-full" bind:value={gridWidth} inline type="number">Grid Width</TextField>
+        <TextField class="block w-full" bind:value={gridHeight} inline type="number">Grid Height</TextField>
 
         <h2 class="title is-4 mt-4">Add Objects</h2>
         <p class="title is-6">objects are added from the square you last clicked on</p>
@@ -244,7 +238,7 @@
     <div class="grid-wrapper">
         <div class="grid">
             {#each grid as row, rowIndex}
-                <div class="row">
+                <div class="flex">
                     {#each row as square, squareIndex}
                         <Square bind:alive={square} onclick={() => {row[squareIndex] = 1-row[squareIndex]; lastY = rowIndex; lastX = squareIndex}}/>
                     {/each}

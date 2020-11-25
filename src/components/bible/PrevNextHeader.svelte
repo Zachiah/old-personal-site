@@ -1,5 +1,5 @@
 <script>
-    import Button from "/components/Button.svelte";
+    import Button from "/components/old/Button.svelte";
 
     export let prevHref;
     export let nextHref;

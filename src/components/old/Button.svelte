@@ -14,7 +14,7 @@
     export let tag = href ? "a" : "button";
 
     $: if (tag !== "button" && tag !== "div" && tag !== "span" && tag !== "a") {
-        throw new Error("Button.svelte Invalid tag '" + tag + "'");
+        throw new Error("old/Button.svelte Invalid tag '" + tag + "'");
     }
 
     const conClass = (value,className) => value ? className : '';

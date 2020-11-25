@@ -1,8 +1,8 @@
 <script>
     import {User} from "/sveltefire.js";
     import Loader from "/components/Loader.svelte";
-    import TextField from "/components/TextField.svelte";
-    import Button from "/components/Button.svelte";
+    import TextField from "/components/old/TextField.svelte";
+    import Button from "/components/old/Button.svelte";
     import Header from "/components/Header.svelte";
 
     import {onMount} from "svelte";

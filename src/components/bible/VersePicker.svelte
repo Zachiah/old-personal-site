@@ -1,6 +1,6 @@
 <script>
     import {goto} from "@sapper/app";
-    import Button from "/components/Button.svelte";
+    import Button from "/components/old/Button.svelte";
 
     export let books;
     let selectedBook = null;

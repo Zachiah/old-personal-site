@@ -1,7 +1,7 @@
 <script>
-    import TextField from "/components/TextField.svelte";
+    import TextField from "/components/old/TextField.svelte";
     import Checkbox from "/components/Checkbox.svelte";
-    import Button from "/components/Button.svelte";
+    import Button from "/components/form/Button.svelte";
     import {goto} from "@sapper/app";
     import getSearchString from "/routes/bible/_getSearchString.js";
     import CollapsibleCard from "/components/CollapsibleCard.svelte";
@@ -51,7 +51,7 @@
 
         <div slot="footer" class="dc">
             <div class="card-footer-item">
-                <Button primary  disabled={isDisabled($searchText)} type="submit">Go</Button>
+                <Button class="px-5" theme="green"  disabled={isDisabled($searchText)} type="submit">Go</Button>
             </div>
         </div>
     </CollapsibleCard>

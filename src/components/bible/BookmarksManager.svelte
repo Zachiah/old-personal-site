@@ -2,8 +2,8 @@
     // Component Imports
     import CollapsibleCard from "/components/CollapsibleCard.svelte";
     import DropdownItem from "/components/DropdownItem.svelte";
-    import Button from "/components/Button.svelte";
-    import TextField from "/components/TextField.svelte";
+    import Button from "/components/old/Button.svelte";
+    import TextField from "/components/old/TextField.svelte";
 
     // Store Imports
     import {bookmarks} from "/stores/bible.store.js";

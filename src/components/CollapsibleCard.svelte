@@ -1,7 +1,7 @@
 <!-- This doesn't replace the <select> tag... only use it if you need a collapsible pain-->
 
 <script>
-    import Button from "/components/Button.svelte";
+    import Button from "/components/old/Button.svelte";
     import {fade} from "svelte/transition";
 
     export let title;

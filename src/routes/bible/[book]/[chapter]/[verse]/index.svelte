@@ -21,7 +21,7 @@
 
 <script>
     import Verse from "/components/bible/Verse.svelte";
-    import Button from "/components/Button.svelte";
+    import Button from "/components/old/Button.svelte";
 
     export let book;
     export let chapter;

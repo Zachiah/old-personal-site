@@ -38,7 +38,7 @@
 
 <script>
     import Verse from "/components/bible/Verse.svelte";
-    import Button from "/components/Button.svelte";
+    import Button from "/components/old/Button.svelte";
     import PrevNextHeader from "/components/bible/PrevNextHeader.svelte";
     import {searchText, searchExactMatch,searchCaseSensitive,searchWholeWords,searchRegex} from "/stores/bible.store.js";
 
