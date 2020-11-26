@@ -2,7 +2,7 @@
     // Component Imports
     import CollapsibleCard from "/components/CollapsibleCard.svelte";
     import DropdownItem from "/components/DropdownItem.svelte";
-    import Button from "/components/old/Button.svelte";
+    import Button from "/components/form/Button.svelte";
     import TextField from "/components/old/TextField.svelte";
 
     // Store Imports
@@ -40,7 +40,6 @@
     <div slot="content">
         {#each $bookmarks as bookmark, index}
             <DropdownItem style="display: flex;">
-                <span class="mr-2">{bookmark.book} {bookmark.chapter}</span>
                 <span class="mr-2"><TextField bind:value={$bookmarks[index].name} inline>{bookmark.book} {bookmark.chapter}</TextField></span>
 
                 <Button
@@ -52,9 +51,9 @@
                     Set to current
                 </Button>
 
-                <Button primary class="mr-2" href="/bible/{bookmark.book}/{bookmark.chapter}">Go</Button>
+                <Button theme="green" class="mr-2" href="/bible/{bookmark.book}/{bookmark.chapter}">Go</Button>
 
-                <Button on:click={() => handleDelete(index)} danger>Delete</Button>
+                <Button theme="red" on:click={() => handleDelete(index)}>Delete</Button>
             </DropdownItem>
         {/each}
     </div>
