@@ -7,11 +7,7 @@
     import Modal from "/components/Modal.svelte";
     //import CheckBox from "/components/form/ "
 
-    let todos;
-
-    let selectedTodoBools;
-    $: console.log(selectedTodoBools);
-    $: selectedTodos = todos ? todos.filter(todo => selectedTodoBools[todo.id]) : undefined;
+    const dateFormatter = Intl.DateTimeFormat()
 
     function calcDates(todo) {
         return Object.keys(todo.schedule);
@@ -19,7 +15,6 @@
 
     function pluralData(todoItemIndexes,items) {
         const todoDate = todoItemIndexes.map(item => items[item])
-        console.log(todoDate,items)
         return {
             amount: todoDate.length,
             start: todoDate[0],
@@ -32,14 +27,14 @@
                         .map((item) => todo.items[item])
                         .map(item => item.completed) : [false];
 
-        console.log("completion",day,todo,bools)
-        return bools.reduce((a,b) => (a + b), 0) / bools.length;
+        
+        let result = bools.reduce((a,b) => (a + b), 0) / bools.length;
+        return result;
     }
 
     function completionColor(day,todo) {
         
         let avg = completion(day,todo);
-        console.log(day,todo,avg);
         if (avg === 1) {
             return "green-500";
         } else if (avg === 0) {
@@ -59,17 +54,47 @@
                                                 item
                                         )
                                     );
-        console.log("todosRef", todosRef);
-        console.log(selectedTodos[todoIndex])
         await todosRef.doc(selectedTodos[todoIndex].id).set(selectedTodos[todoIndex]);
     }
 
-    $: allDates = selectedTodos ? [...new Set(selectedTodos.flatMap(todo => calcDates(todo)))].sort((a,b) => new Date(a) - new Date(b)) : undefined;
+    function handleTodosData(e) {
+        const newTodos = !todos || todos.length !== e.detail.data.length;
+        todos = e.detail.data;
+        if (!selectedTodoBools || newTodos) {
+            selectedTodoBools = todos ? twoListToObj(todos.map(item => [item.id, false])) : undefined;
+        }
+    }
+
+    function handleCheckboxInput(e,date,selectedTodoIndex,todosRef) {
+        updateCompletion(date, selectedTodoIndex, todosRef,e.target.checked);
+    }
+
+    function cellText(selectedTodo,date) {
+        const data = selectedTodo.items.length > 1 ? pluralData(selectedTodo.schedule[date],selectedTodo.items) : selectedTodo.items[selectedTodo.schedule[date][0]];
+        return template(selectedTodo.plural,data);
+    }
+
+    let todos;
+
+    let selectedTodoBools;
+    $: selectedTodos = todos ? todos.filter(todo => selectedTodoBools[todo.id]) : undefined;
+
+    let allDates;
+    $: {
+        if (selectedTodos) {
+            let intermediate = [...new Set(selectedTodos.flatMap(todo => calcDates(todo)))]
+            intermediate = intermediate.map(item => new Date(parseInt(item)))
+            intermediate = intermediate.sort((a,b) => a-b)
+            intermediate = intermediate.map(item => item.valueOf());
+            allDates = intermediate;
+        }
+    }
+    $: console.log(allDates);
 </script>
 
 
 <User let:user persist={sessionStorage}>
-    <Collection path="users/{user.uid}/todos" let:ref={todosRef} on:data={(e) => {todos = e.detail.data; selectedTodoBools = todos ? twoListToObj(todos.map(item => [item.id, false])) : undefined;}}>
+    <Collection path="users/{user.uid}/todos" let:ref={todosRef} on:data={handleTodosData}>
         {#if todos}
             {#if todos.length > 0}
                 <ul>
@@ -80,35 +105,37 @@
                     {/each}
                 </ul>
 
-                <table class="block max-w-fit-content my-auto overflow-x-auto whitespace-no-wrap border-black border-2">
-                    <tr class="p-2">
-                        <th class="" aria-label="Date"><!--EMPTY SPACE--></th>
-                        {#each selectedTodos as selectedTodo}
-                            <th class="font-mono pl-4 border-black border-2">{selectedTodo.title}</th>
-                        {/each}
-                    </tr>
-
-                    {#each allDates as date}
-                        <tr class="p-2 ">
-                            <td class="font-mono font-bold border-black border-2">
-                                {date}
-                            </td>
-                            {#each selectedTodos as selectedTodo, selectedTodoIndex}
-                                <td class="pl-4 border-black border-2 bg-{completionColor(date,selectedTodo)}">
-                                    {#if selectedTodo.schedule[date]}
-                                        {template(selectedTodo.plural,pluralData(selectedTodo.schedule[date],selectedTodo.items))}
-
-                                        <input
-                                            type="checkbox"
-                                            checked={completion(selectedTodo.schedule[date], selectedTodo) === 1}
-                                            on:input={function() {updateCompletion(date, selectedTodoIndex, todosRef,this.value)}}
-                                        />
-                                    {/if}
-                                </td>
+                {#if selectedTodos.length > 0}
+                    <table class="block max-w-fit-content my-auto overflow-x-auto whitespace-no-wrap border-black border-2">
+                        <tr class="p-2">
+                            <th class="" aria-label="Date"><!--EMPTY SPACE--></th>
+                            {#each selectedTodos as selectedTodo}
+                                <th class="font-mono pl-4 border-black border-2">{selectedTodo.title}</th>
                             {/each}
                         </tr>
-                    {/each}
-                </table>
+
+                        {#each allDates as date}
+                            <tr class="p-2 ">
+                                <td class="font-mono font-bold border-black border-2">
+                                    {dateFormatter.format(new Date(date))}
+                                </td>
+                                {#each selectedTodos as selectedTodo, selectedTodoIndex}
+                                    <td class="pl-4 border-black border-2 bg-{completionColor(date,selectedTodo)}">
+                                        {#if selectedTodo.schedule[date]}
+                                            {cellText(selectedTodo,date)}
+
+                                            <input
+                                                type="checkbox"
+                                                checked={completion(date, selectedTodo) === 1}
+                                                on:input={e => handleCheckboxInput(e,date,selectedTodoIndex,todosRef)}
+                                            />
+                                        {/if}
+                                    </td>
+                                {/each}
+                            </tr>
+                        {/each}
+                    </table>
+                {/if}
 
             {:else}
                 You don't have any todos <a href="/todo-plus-plus/new" class="bg-blue-500 p-2">create one</a>
@@ -119,7 +146,8 @@
 
 <NewTypeSelector />
 
-<Modal open={true}>
+
+<!-- <Modal open={true}>
     Hello
-</Modal>
+</Modal> -->
  

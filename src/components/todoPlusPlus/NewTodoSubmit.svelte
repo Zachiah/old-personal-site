@@ -60,7 +60,7 @@
         return twoListToObj(
                 chunk(items.map((item) => item.index), Math.ceil(items.length / practiceDays.length))
                     .map((itemIndexes,index) => ([
-                            new Date(practiceDays[index].time).toDateString(),
+                            new Date(new Date(practiceDays[index].time).toDateString()).valueOf(),
                             itemIndexes
                     ]))
         )
