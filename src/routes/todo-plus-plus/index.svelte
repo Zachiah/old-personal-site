@@ -5,6 +5,8 @@
     import twoListToObj from "/util/twoListToObj.js";
     import template from "/util/template.js";
     import Modal from "/components/Modal.svelte";
+    import Button from "/components/form/Button.svelte";
+    import Loader from "/components/Loader.svelte";
     //import CheckBox from "/components/form/ "
 
     const dateFormatter = Intl.DateTimeFormat()
@@ -33,6 +35,8 @@
     }
 
     function completionColor(day,todo) {
+        if (!todo.schedule[day]) return "white";
+
         let past = new Date() > day;
         let avg = completion(day,todo);
         if (avg === 1) {
@@ -83,7 +87,23 @@
         return template(selectedTodo.plural,data);
     }
 
+    function openDialog(date,selectedTodo,index) {
+        modalOpen = true;
+        modalTodo = selectedTodo;
+        modalTodoDate = date;
+        modalTodoIndex = index;
+    }
+
+    async function handleTodoItemCheckboxInput(e,todoItemIndex,todosRef) {
+        selectedTodos[modalTodoIndex].items[todoItemIndex].completed = e.target.checked;
+        await todosRef.doc(selectedTodos[modalTodoIndex].id).set(selectedTodos[modalTodoIndex])
+    }
+
     let todos;
+    let modalOpen;
+    let modalTodo;
+    let modalTodoDate;
+    let modalTodoIndex;
 
     let selectedTodoBools;
     $: selectedTodos = todos ? todos.filter(todo => selectedTodoBools[todo.id]) : undefined;
@@ -104,6 +124,9 @@
 
 <User let:user persist={sessionStorage}>
     <Collection path="users/{user.uid}/todos" let:ref={todosRef} on:data={handleTodosData}>
+        <div slot="loading">
+            <Loader />
+        </div>
         {#if todos}
             {#if todos.length > 0}
                 <ul>
@@ -131,13 +154,23 @@
                                 {#each selectedTodos as selectedTodo, selectedTodoIndex}
                                     <td class="pl-4 border-black border-2 bg-{completionColor(date,selectedTodo)}">
                                         {#if selectedTodo.schedule[date]}
-                                            {cellText(selectedTodo,date)}
+                                            <div class="flex items-center">
+                                                <div>
+                                                    {cellText(selectedTodo,date)} 
+                                                </div>
 
-                                            <input
-                                                type="checkbox"
-                                                checked={completion(date, selectedTodo) === 1}
-                                                on:input={e => handleCheckboxInput(e,date,selectedTodoIndex,todosRef)}
-                                            />
+                                                <input
+                                                    class="w-8 h-8 ml-auto"
+                                                    type="checkbox"
+                                                    checked={completion(date, selectedTodo) === 1}
+                                                    on:input={e => handleCheckboxInput(e,date,selectedTodoIndex,todosRef)}
+                                                />
+                                                <Button theme="gray" on:click={() => {openDialog(date,selectedTodo,selectedTodoIndex)}}>
+                                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                                                    </svg>
+                                                </Button>
+                                            </div>
                                         {/if}
                                     </td>
                                 {/each}
@@ -147,16 +180,29 @@
                 {/if}
 
             {:else}
-                You don't have any todos <a href="/todo-plus-plus/new" class="bg-blue-500 p-2">create one</a>
+                You don't have any todos use the plus to create one
             {/if}
+        
+        {:else}
+            <Loader />
         {/if}
+
+        <Modal bind:open={modalOpen} title="{modalTodoDate && dateFormatter.format(new Date(modalTodoDate))} for {modalTodo && modalTodo.title}">
+            <ul>
+                {#each modalTodo.schedule[modalTodoDate] as todoItemIndex}
+                    <li>
+                        <label>
+                            <input type="checkbox" checked={selectedTodos[modalTodoIndex].items[todoItemIndex].completed} on:input={(e) => handleTodoItemCheckboxInput(e,todoItemIndex,todosRef)}/>{template(modalTodo.singular,modalTodo.items[todoItemIndex])}
+                        </label>
+                    </li>
+                {/each}
+            </ul>
+        </Modal> 
     </Collection>
 </User>
 
 <NewTypeSelector />
 
 
-<!-- <Modal open={true}>
-    Hello
-</Modal> -->
+
  
