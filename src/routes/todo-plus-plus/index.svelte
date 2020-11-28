@@ -33,16 +33,25 @@
     }
 
     function completionColor(day,todo) {
-        
+        let past = new Date() > day;
         let avg = completion(day,todo);
         if (avg === 1) {
             return "green-500";
         } else if (avg === 0) {
-            return "white";
+            if (past) {
+                return "red-500";
+            } else {
+                return "white";
+            }
         } else {
-            return "orange-500";
+            if (past) {
+                return "orange-500";
+            } else {
+                return "blue-500";
+            }
         }
     }
+
 
     async function updateCompletion(date,todoIndex,todosRef,value) {
         selectedTodos[todoIndex].items = selectedTodos[todoIndex]
