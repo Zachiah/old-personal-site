@@ -12,6 +12,7 @@
 
 	import {lastPath} from "/stores/auth.store.js";
 	import {loading} from "/stores/loading.store.js";
+	import navOpen from "/stores/nav.store.js";
 
 	import {stores} from "@sapper/app";
 	const {page,preloading} = stores();
@@ -21,6 +22,7 @@
 			$lastPath = v.path;
 			$loading = false;
 			console.log(v.path);
+			$navOpen = false;
 		}
 	});
 

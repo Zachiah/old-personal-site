@@ -17,6 +17,7 @@
     "@rollup/plugin-typescript": "^6.0.0",
     "bulma": "^0.9.0",
     "compression": "^1.7.1",
+    "dequal": "^2.0.2",
     "downloadjs": "^1.4.7",
     "firebase": "^7.22.0",
     "hammerjs": "^2.0.8",

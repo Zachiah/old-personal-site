@@ -1,7 +1,9 @@
 <script>
     import {onMount} from "svelte";
     import {User} from "/sveltefire.js";
-    import Loader from "/components/Loader.svelte"
+    import Loader from "/components/Loader.svelte";
+    import {fly} from "svelte/transition";
+    import active from "/stores/nav.store.js";
 
     let hasMounted = false;
     onMount(() => {
@@ -10,7 +12,6 @@
 
 
     export let segment;
-    let active = false;
 
     const links = ['math-problems','spirograph','conway-life', 'bible', 'todo-plus-plus'];
 
@@ -28,30 +29,32 @@
     <div class="navbar-brand">
         <a class="navbar-item {undefined === segment ? 'is-active' : ''}" href="/">Home</a>
         
-        <button class="navbar-burger button bg-green-500 is-outlined {active ? 'is-active' : ''}" on:click={() => active = !active}>
+        <button class="navbar-burger button bg-green-500 is-outlined {$active ? 'is-active' : ''}" on:click={() => $active = !$active}>
             {#each [1,2,3] as i}
                 <span aria-hidden="true"></span> 
             {/each}
         </button>
     </div>
-    <div class="navbar-menu {active ? 'is-active' : ''}">
-        <div class="navbar-end">
-            {#if hasMounted}
-                <User persist={sessionStorage} let:user={user} let:auth={auth}>
-                    <button class="navbar-item {'sign-out' === segment ? 'is-active' : ''}" on:click={() => {signOut(auth)}}>Sign Out</button>
+    {#if $active}
+        <div class="navbar-menu is-active" transition:fly={{x:800,duration:500}}>
+            <div class="navbar-end">
+                {#if hasMounted}
+                    <User persist={sessionStorage} let:user={user} let:auth={auth}>
+                        <button class="navbar-item {'sign-out' === segment ? 'is-active' : ''}" on:click={() => {signOut(auth)}}>Sign Out</button>
 
-                    <div slot="signed-out" class="dc">
-                        <a href="/sign-in" class="navbar-item {'sign-in' === segment ? 'is-active' : ''}">Sign In</a>
-                        <a href="/sign-up" class="navbar-item {'sign-up' === segment ? 'is-active' : ''}">Sign Up</a>
-                    </div>
-                </User>
-            {:else}
-                <Loader />
-            {/if}
+                        <div slot="signed-out" class="dc">
+                            <a href="/sign-in" class="navbar-item {'sign-in' === segment ? 'is-active' : ''}">Sign In</a>
+                            <a href="/sign-up" class="navbar-item {'sign-up' === segment ? 'is-active' : ''}">Sign Up</a>
+                        </div>
+                    </User>
+                {:else}
+                    <Loader />
+                {/if}
 
-            {#each links as link}
-                <a href="/{link}" class="navbar-item {link === segment ? 'is-active' : ''}">{pathToHuman(link)}</a>
-            {/each}
-        </div> 
-    </div>
+                {#each links as link}
+                    <a href="/{link}" class="navbar-item {link === segment ? 'is-active' : ''}">{pathToHuman(link)}</a>
+                {/each}
+            </div> 
+        </div>
+    {/if}
 </nav>

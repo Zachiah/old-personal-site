@@ -55,8 +55,6 @@
             index = (index+1) % days.length;
         }
 
-        console.log(practiceDays);
-
         return twoListToObj(
                 chunk(items.map((item) => item.index), Math.ceil(items.length / practiceDays.length))
                     .map((itemIndexes,index) => ([
