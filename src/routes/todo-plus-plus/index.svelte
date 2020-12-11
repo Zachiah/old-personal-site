@@ -79,7 +79,7 @@
                             <ShowHideToggle bind:visible={selectedTodoBools[todo.id]}/>
                             <div>
                                 {#if unsavedTodos[todo.id]}
-                                    <Button on:click={() => save(todo,index,todosRef)}>
+                                    <Button on:click={() => save(todo,index,todosRef)} disabled={unsavedTodos[todo.id] === "loading"}>
                                         {#if unsavedTodos[todo.id] === "loading"}
                                             <Loader size={4}/>
                                         {:else}
