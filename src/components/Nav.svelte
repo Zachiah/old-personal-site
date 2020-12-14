@@ -25,11 +25,47 @@
     }
 </script> 
 
+<style>
+    .nvb {
+        color: #4a4a4a;
+        cursor: pointer;
+        display: block;
+        height: 3.25rem;
+        position: relative;
+        width: 3.25rem;
+        margin-left: auto;
+    }
+
+    .nvb span {
+        background-color: currentColor;
+        display: block;
+        height: 1px;
+        left: calc(50% - 8px);
+        position: absolute;
+        transform-origin: center;
+        transition-duration: 86ms;
+        transition-property: background-color,opacity,transform;
+        transition-timing-function: ease-out;
+        width: 16px;
+    }
+    
+
+    .nvb span:nth-child(1) {
+        top: calc(50% - 6px);
+    }
+    .nvb span:nth-child(2) {
+        top: calc(50% - 1px);
+    }
+    .nvb span:nth-child(3) {
+        top: calc(50% + 4px);
+    }
+</style>
+
 <nav class="navbar bg-green-500 mb-4"> 
     <div class="navbar-brand">
         <a class="navbar-item {undefined === segment ? 'is-active' : ''}" href="/">Home</a>
         
-        <button class="navbar-burger button bg-green-500 is-outlined {$active ? 'is-active' : ''}" on:click={() => $active = !$active}>
+        <button class="nvb button bg-green-500 is-outlined {$active ? 'is-active' : ''}" on:click={() => $active = !$active}>
             {#each [1,2,3] as i}
                 <span aria-hidden="true"></span> 
             {/each}

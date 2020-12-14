@@ -57,10 +57,20 @@
                             : null;
     $: console.log(unsavedTodos);
 
+    function arrayWithout(list, index) {
+        return [...list.slice(0,index),...list.slice(index+1)]
+    }
+
     async function save(todo,index,todosRef) {
         unsavedTodos[todo.id] = "loading";
         await todosRef.doc(todo.id).set(todo.toJSON());
         dbTodos[index] = new Todo(JSON.parse(JSON.stringify(todo)));
+    }
+
+    async function deleteTodo(todo,index,todosRef) {
+        todos = arrayWithout(todos,index);
+        dbTodos = arrayWithout(dbTodos,index);
+        await todosRef.doc(todo.id).delete();
     }
     
 </script>
@@ -73,7 +83,7 @@
         </div>
         {#if todos}
             {#if todos.length > 0}
-                <div class="grid grid-cols-3 items-center">
+                <div class="grid grid-cols-4 items-center">
                     {#each todos as todo,index}
                             <p>{todo.title}</p>
                             <ShowHideToggle bind:visible={selectedTodoBools[todo.id]}/>
@@ -88,6 +98,7 @@
                                     </Button>
                                 {/if}
                             </div>
+                            <Button theme="red" on:click={() => deleteTodo(todo,index,todosRef)}>Delete</Button>
                     {/each}
                 </div>
 
