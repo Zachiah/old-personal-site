@@ -68,12 +68,12 @@ a.z-navbar-item:focus, a.z-navbar-item:focus-within, a.z-navbar-item:hover, a.z-
 
 </style>
 
-<nav class="z-navbar bg-gray-500 h-16 relative z-20"> 
-    <div class="items-stretch flex flex-shrink-0 min-h-4 w-full">
-        <a class="z-navbar-item flex-grow-0 flex-shrink-0 cursor-pointer" class:is-active={segment === undefined} href="/">Home</a>
+<nav class=" bg-gray-500 h-16 relative z-20"> 
+    <div class="items-center flex flex-shrink-0 min-h-4 w-full">
+        <a class=" p-4 hover:text-blue-500 flex-grow-0 flex-shrink-0 cursor-pointer" class:is-active={segment === undefined} href="/">Home</a>
         
         <button
-            class="button cursor-pointer border-0 block
+            class="button cursor-pointer border-0 block outline-none
                    h-16 w-16 ml-auto relative text-gray-800"
             class:bg-gray-300={$active}
             class:bg-gray-500={!$active}
