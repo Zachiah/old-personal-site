@@ -37,12 +37,16 @@
 <FirebaseApp {firebase}>
 	<Nav {segment} />
 
-	<main class="container is-fluid">
+	<main class="container is-fluid pt-4">
 		{#if $loading}
 			<Loader />
 		{:else}
 			<slot></slot>
 		{/if}
 	</main>
+
+	{#if $navOpen}
+		<div class="absolute w-full h-full z-10 bg-gray-900 opacity-75 top-0" on:click={() => {$navOpen = false}}></div>
+	{/if}
 </FirebaseApp>
  

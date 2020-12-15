@@ -26,17 +26,7 @@
 </script> 
 
 <style>
-    .nvb {
-        color: #4a4a4a;
-        cursor: pointer;
-        display: block;
-        height: 3.25rem;
-        position: relative;
-        width: 3.25rem;
-        margin-left: auto;
-    }
-
-    .nvb span {
+    span {
         background-color: currentColor;
         display: block;
         height: 1px;
@@ -50,37 +40,60 @@
     }
     
 
-    .nvb span:nth-child(1) {
+    span:nth-child(1) {
         top: calc(50% - 6px);
     }
-    .nvb span:nth-child(2) {
+    span:nth-child(2) {
         top: calc(50% - 1px);
     }
-    .nvb span:nth-child(3) {
+    span:nth-child(3) {
         top: calc(50% + 4px);
     }
+
+
+.z-navbar-item {
+  color: #4a4a4a;
+  display: block;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  position: relative;
+}
+
+
+a.z-navbar-item:focus, a.z-navbar-item:focus-within, a.z-navbar-item:hover, a.z-navbar-item.is-active {
+  background-color: #fafafa;
+  color: #3273dc;
+}
+
+
 </style>
 
-<nav class="navbar bg-green-500 mb-4"> 
-    <div class="navbar-brand">
-        <a class="navbar-item {undefined === segment ? 'is-active' : ''}" href="/">Home</a>
+<nav class="z-navbar bg-gray-500 h-16 relative z-20"> 
+    <div class="items-stretch flex flex-shrink-0 min-h-4 w-full">
+        <a class="z-navbar-item flex-grow-0 flex-shrink-0 cursor-pointer" class:is-active={segment === undefined} href="/">Home</a>
         
-        <button class="nvb button bg-green-500 is-outlined {$active ? 'is-active' : ''}" on:click={() => $active = !$active}>
-            {#each [1,2,3] as i}
-                <span aria-hidden="true"></span> 
+        <button
+            class="button cursor-pointer border-0 block
+                   h-16 w-16 ml-auto relative text-gray-800"
+            class:bg-gray-300={$active}
+            class:bg-gray-500={!$active}
+            on:click={() => $active = !$active}
+        >
+            {#each [1,2,3] as _}
+                <span></span>
             {/each}
         </button>
     </div>
     {#if $active}
-        <div class="navbar-menu is-active" transition:fly={{x:800,duration:500}}>
-            <div class="navbar-end">
+        <div class="bg-white px-4 block absolute w-full" style="box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);" transition:fly={{x:800,duration:500}}>
+            <div>
                 {#if hasMounted}
                     <User persist={sessionStorage} let:user={user} let:auth={auth}>
-                        <button class="navbar-item {'sign-out' === segment ? 'is-active' : ''}" on:click={() => {signOut(auth)}}>Sign Out</button>
+                        <button class="z-navbar-item flex-grow-0 flex-shrink-0 cursor-pointer {'sign-out' === segment ? 'is-active' : ''}" on:click={() => {signOut(auth)}}>Sign Out</button>
 
                         <div slot="signed-out" class="dc">
-                            <a href="/sign-in" class="navbar-item {'sign-in' === segment ? 'is-active' : ''}">Sign In</a>
-                            <a href="/sign-up" class="navbar-item {'sign-up' === segment ? 'is-active' : ''}">Sign Up</a>
+                            <a href="/sign-in" class="z-navbar-item flex-grow-0 flex-shrink-0 cursor-pointer {'sign-in' === segment ? 'is-active' : ''}">Sign In</a>
+                            <a href="/sign-up" class="z-navbar-item flex-grow-0 flex-shrink-0 cursor-pointer {'sign-up' === segment ? 'is-active' : ''}">Sign Up</a>
                         </div>
                     </User>
                 {:else}
@@ -88,7 +101,13 @@
                 {/if}
 
                 {#each links as link}
-                    <a href="/{link}" class="navbar-item {link === segment ? 'is-active' : ''}">{pathToHuman(link)}</a>
+                    <a
+                        href="/{link}"
+                        class="z-navbar-item flex-grow-0 flex-shrink-0 cursor-pointer"
+                        class:is-active={link === segment}
+                    >
+                        {pathToHuman(link)}
+                    </a>
                 {/each}
             </div> 
         </div>
