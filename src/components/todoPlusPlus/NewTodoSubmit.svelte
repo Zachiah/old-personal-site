@@ -78,7 +78,7 @@
         dispatch('complete');
         if (todo) {
             // If todo we are editing not making a new one
-            todo = new Todo(getTodoObj());
+            todo = new Todo({...getTodoObj(),id: todo.id});
         }
         else {
             if (valid) {
