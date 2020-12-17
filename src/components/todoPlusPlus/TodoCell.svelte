@@ -3,10 +3,14 @@
     import Modal from "/components/Modal.svelte";
     import dateFormatter from "/util/dateFormatter.js";
     import template from "/util/template.js";
+    import {createEventDispatcher} from "svelte";
+
+    const dispatch = createEventDispatcher();
 
     export let day;
     export let todo;
-    export let todosRef;
+
+    let oldTodoJSON = JSON.stringify(todo);
 
     async function handleCheckboxInput(e) {
         todo.items = todo
@@ -20,12 +24,14 @@
                         );
     }
 
-    $: {
-        todo;
-        //todosRef.doc(todo.id).set(todo.toJSON());
-    }
-
     let modalOpen = false;
+
+    $: {
+        if (JSON.stringify(todo) !== oldTodoJSON) {
+            dispatch('change');
+            oldTodoJSON = todo;
+        }
+    }
 </script>
 
 <td class="pl-4 border-black border-2 bg-{todo.cellColor(day)}">
